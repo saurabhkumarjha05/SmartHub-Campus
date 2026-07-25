@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useToast } from '../components/ToastContext';
 
 export const EventsView: React.FC = () => {
+  const { showToast } = useToast();
   const [filter, setFilter] = useState<'All' | 'Academic' | 'Social' | 'Career'>('All');
   const [registeredEvents, setRegisteredEvents] = useState<string[]>(['evt-1']);
 
@@ -19,34 +21,34 @@ export const EventsView: React.FC = () => {
     },
     {
       id: 'evt-2',
-      title: 'Annual Tech & Engineering Career Fair',
-      date: 'Nov 08, 2024',
+      title: 'Global Tech Career & Internship Fair',
+      date: 'Nov 12, 2024',
       time: '10:00 AM - 04:00 PM EST',
-      location: 'Campus Recreation Center',
+      location: 'Student Union Great Hall',
       category: 'Career',
-      organizer: 'Career Development Office',
-      attendees: 320,
+      organizer: 'IIT Delhi Career Development Center',
+      attendees: 310,
       image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&auto=format&fit=crop&q=80',
-      description: 'Connect with recruiters from top engineering firms, AI labs, and high-growth startups for summer 2025 internships and full-time roles.'
+      description: 'Connect with over 45 hiring teams from top software engineering, hardware, and quantitative research firms.'
     },
     {
       id: 'evt-3',
-      title: 'Campus Sunset Music & Food Festival',
-      date: 'Nov 12, 2024',
-      time: '05:00 PM - 09:00 PM EST',
-      location: 'South Lawn Amphitheater',
+      title: 'Campus Winter Music & Cultural Fest',
+      date: 'Nov 18, 2024',
+      time: '06:00 PM EST',
+      location: 'Outdoor Amphitheater',
       category: 'Social',
-      organizer: 'Student Government Board',
-      attendees: 512,
-      image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&auto=format&fit=crop&q=80',
-      description: 'Live student band performances, food truck vouchers, and interactive art installations. Free admission for all students with ID.'
+      organizer: 'Student Activity Council',
+      attendees: 520,
+      image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&auto=format&fit=crop&q=80',
+      description: 'An evening of live indie bands, food trucks, light shows, and student art exhibitions under the stars.'
     },
     {
       id: 'evt-4',
-      title: 'Quantum Computing Research Symposium',
-      date: 'Nov 15, 2024',
-      time: '01:00 PM - 05:00 PM EST',
-      location: 'Science Hall Auditorium A',
+      title: 'Quantum Computing Frontiers Seminar',
+      date: 'Nov 24, 2024',
+      time: '02:00 PM EST',
+      location: 'Science Auditorium B',
       category: 'Academic',
       organizer: 'Physics & CS Faculty',
       attendees: 88,
@@ -60,10 +62,10 @@ export const EventsView: React.FC = () => {
   const toggleRegister = (id: string, title: string) => {
     if (registeredEvents.includes(id)) {
       setRegisteredEvents(prev => prev.filter(e => e !== id));
-      alert(`Unregistered from "${title}".`);
+      showToast(`Unregistered from "${title}".`, 'info');
     } else {
       setRegisteredEvents(prev => [...prev, id]);
-      alert(`Pass confirmed for "${title}"! Ticket saved to your notifications.`);
+      showToast(`Pass confirmed for "${title}"! Ticket saved to your notifications.`, 'success');
     }
   };
 

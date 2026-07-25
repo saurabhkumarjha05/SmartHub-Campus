@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
+import { useToast } from '../components/ToastContext';
 
 interface LoginScreenProps {
   onLoginSuccess: () => void;
 }
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
+  const { showToast } = useToast();
   const [email, setEmail] = useState('priya.sharma@iitd.ac.in');
   const [password, setPassword] = useState('password123');
   const [isLoading, setIsLoading] = useState(false);
@@ -90,7 +92,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
                     href="#forgot"
                     onClick={(e) => {
                       e.preventDefault();
-                      alert('Kerberos reset password instructions sent to your phone number +91 98765*****');
+                      showToast('Kerberos reset password instructions sent to your phone number +91 98765*****', 'info');
                     }}
                     className="text-xs font-bold text-[#3525cd] dark:text-indigo-400 hover:underline"
                   >

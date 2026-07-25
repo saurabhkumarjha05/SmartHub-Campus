@@ -23,7 +23,7 @@ function getGeminiClient(): GoogleGenAI {
       apiKey,
       httpOptions: {
         headers: {
-          "User-Agent": "aistudio-build",
+          "User-Agent": "smart-campus-hub",
         },
       },
     });

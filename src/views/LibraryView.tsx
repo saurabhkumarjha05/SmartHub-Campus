@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { useToast } from '../components/ToastContext';
 
 interface RecentlyAddedBook {
   id: string;
@@ -12,6 +13,7 @@ interface RecentlyAddedBook {
 }
 
 export const LibraryView: React.FC = () => {
+  const { showToast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState<string>('All Books');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [savedBooks, setSavedBooks] = useState<string[]>(['bk-1', 'bk-4']);
@@ -188,7 +190,7 @@ export const LibraryView: React.FC = () => {
                     {book.dueDate}
                   </span>
                   <button
-                    onClick={() => alert(`Options for "${book.title}": Renewed online until next month!`)}
+                    onClick={() => showToast(`"${book.title}" renewed online until next month!`, 'success')}
                     className="text-[#777587] dark:text-gray-400 hover:text-[#1b1b24] dark:hover:text-white p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                   >
                     <span className="material-symbols-outlined text-lg">more_vert</span>
@@ -550,7 +552,7 @@ export const LibraryView: React.FC = () => {
             <div className="space-y-2 pt-2">
               <button
                 onClick={() => {
-                  alert(`Digital E-Book access granted for "${selectedBookModal.title}". E-reader launching!`);
+                  showToast(`Digital E-Book access granted for "${selectedBookModal.title}". E-reader launching!`, 'success');
                   setSelectedBookModal(null);
                 }}
                 className="w-full py-3 rounded-2xl bg-[#3525cd] text-white font-bold text-xs hover:bg-[#4648d4] shadow-sm cursor-pointer"
@@ -559,7 +561,7 @@ export const LibraryView: React.FC = () => {
               </button>
               <button
                 onClick={() => {
-                  alert(`Hold placed for physical copy of "${selectedBookModal.title}". Pick up at Science Quad Library counter!`);
+                  showToast(`Hold placed for physical copy of "${selectedBookModal.title}". Pick up at Science Quad Library!`, 'info');
                   setSelectedBookModal(null);
                 }}
                 className="w-full py-3 rounded-2xl border border-[#3525cd] text-[#3525cd] dark:text-indigo-300 font-bold text-xs hover:bg-indigo-50 dark:hover:bg-indigo-950 cursor-pointer"

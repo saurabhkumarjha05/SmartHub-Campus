@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { UserProfile, CourseGrade, SemesterHistory } from '../types';
 import { motion } from 'motion/react';
+import { useToast } from '../components/ToastContext';
 
 interface ProfileViewProps {
   user: UserProfile;
@@ -15,6 +16,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   semesterHistory,
   onUpdateUser,
 }) => {
+  const { showToast } = useToast();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCvModalOpen, setIsCvModalOpen] = useState(false);
 
@@ -376,7 +378,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <div className="flex justify-end gap-2 pt-2">
               <button
                 onClick={() => {
-                  alert('Portfolio link copied to clipboard!');
+                  showToast('Portfolio link copied to clipboard!', 'success');
                   setIsCvModalOpen(false);
                 }}
                 className="px-5 py-2.5 rounded-xl bg-[#3525cd] text-white font-bold text-xs cursor-pointer shadow-md shadow-[#3525cd]/20"

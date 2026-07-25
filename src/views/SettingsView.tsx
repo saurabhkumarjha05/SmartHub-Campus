@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ThemeSettings, UserProfile } from '../types';
+import { useToast } from '../components/ToastContext';
 
 interface SettingsViewProps {
   settings: ThemeSettings;
@@ -14,6 +15,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   onUpdateSettings,
   onUpdateUser,
 }) => {
+  const { showToast } = useToast();
   const [activeSubTab, setActiveSubTab] = useState<'appearance' | 'account' | 'notifications' | 'widgets'>('appearance');
 
   const [themeMode, setThemeMode] = useState(settings.themeMode);
@@ -46,7 +48,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       email: prefEmail,
     });
     setHasUnsavedChanges(false);
-    alert('Settings & Personalization saved successfully!');
+    showToast('Settings & Personalization saved successfully!', 'success');
   };
 
   const handleDiscard = () => {
@@ -278,7 +280,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
 
         <button
-          onClick={() => alert('Local cache cleared successfully.')}
+          onClick={() => showToast('Local cache cleared successfully.', 'info')}
           className="px-4 py-2 rounded-xl bg-[#f0ecf9] dark:bg-gray-800 hover:bg-gray-200 text-xs font-bold text-[#1b1b24] dark:text-white border border-[#c7c4d8]/40"
         >
           Clear System Cache

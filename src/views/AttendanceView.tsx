@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
+import { useToast } from '../components/ToastContext';
 
 export const AttendanceView: React.FC = () => {
+  const { showToast } = useToast();
   const [checkedIn, setCheckedIn] = useState(false);
 
   const courses = [
@@ -38,7 +40,7 @@ export const AttendanceView: React.FC = () => {
           whileTap={{ scale: 0.97 }}
           onClick={() => {
             setCheckedIn(true);
-            alert('Checked in successfully for COL331 Lecture at Bharti Building via Kerberos Geofence!');
+            showToast('Checked in successfully for COL331 Lecture at Bharti Building via Kerberos Geofence!', 'success');
           }}
           className={`px-5 py-3 rounded-2xl font-extrabold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer ${
             checkedIn

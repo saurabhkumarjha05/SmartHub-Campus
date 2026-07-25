@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
+import { useToast } from '../components/ToastContext';
 
 export const CanteenView: React.FC = () => {
+  const { showToast } = useToast();
   const [balance, setBalance] = useState(450.0);
   const [points, setPoints] = useState(380);
   const [selectedVenue, setSelectedVenue] = useState('All');
@@ -27,17 +29,17 @@ export const CanteenView: React.FC = () => {
 
   const handleOrder = (item: typeof menu[0]) => {
     if (balance < item.price) {
-      alert('Insufficient Canteen Wallet balance! Please top up via Kerberos Pay / UPI.');
+      showToast('Insufficient Canteen Wallet balance! Please top up via Kerberos Pay / UPI.', 'error');
       return;
     }
     setBalance((prev) => Number((prev - item.price).toFixed(2)));
     setPoints((prev) => prev + item.pts);
-    alert(`Order confirmed for "${item.name}"! Pick up counter at ${item.category} in 8 minutes. Token #IITD-${Math.floor(100 + Math.random() * 900)}`);
+    showToast(`Order confirmed for "${item.name}"! Pick up counter at ${item.category} in 8 mins. Token #IITD-${Math.floor(100 + Math.random() * 900)}`, 'success');
   };
 
   const handleTopUp = (amount: number) => {
     setBalance((prev) => prev + amount);
-    alert(`₹${amount} added successfully via Kerberos UPI! New balance: ₹${(balance + amount).toFixed(2)}`);
+    showToast(`₹${amount} added successfully via Kerberos UPI! New balance: ₹${(balance + amount).toFixed(2)}`, 'success');
   };
 
   return (
