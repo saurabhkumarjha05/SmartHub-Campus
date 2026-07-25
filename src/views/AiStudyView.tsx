@@ -29,7 +29,7 @@ export const AiStudyView: React.FC<AiStudyViewProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [newMilestoneText, setNewMilestoneText] = useState('');
 
-  const handleSendMessage = async (customText?: string) => {
+  const handleSendMessage = (customText?: string) => {
     const textToSend = customText || inputPrompt;
     if (!textToSend.trim()) return;
 
@@ -44,20 +44,56 @@ export const AiStudyView: React.FC<AiStudyViewProps> = ({
     if (!customText) setInputPrompt('');
     setIsGenerating(true);
 
-    try {
-      const response = await fetch('/api/ai-tutor', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          prompt: textToSend,
-          mode: studyMode,
-          topic: selectedTopic,
-          history: messages.map((m) => ({ sender: m.sender, text: m.text })),
-        }),
-      });
+    setTimeout(() => {
+      let replyText = `Excellent question regarding ${selectedTopic}!`;
 
-      const data = await response.json();
-      const replyText = data.text || 'I have completed analyzing that concept for your IIT Delhi exam!';
+      const textLower = textToSend.toLowerCase();
+
+      if (textLower.includes('minor') || textLower.includes('exam') || textLower.includes('question')) {
+        replyText = `### 📚 ${selectedTopic} - Exam Prep Breakdown
+
+Here is a high-probability IIT Delhi Minor 2 exam question breakdown:
+
+**Question 1:** *Explain thread control block (TCB) state save/restore operations during kernel preemptive context switches.*
+
+**Solution Summary:**
+1. Save CPU general-purpose registers, Program Counter (PC), and Stack Pointer (SP) to the active TCB.
+2. Update thread state from \`RUNNING\` to \`READY\` in the kernel scheduler queue.
+3. Select next thread via Round-Robin or Multi-Level Feedback Queue (MLFQ).
+4. Restore target thread registers and resume execution at saved PC.`;
+      } else if (textLower.includes('code') || textLower.includes('tree') || textLower.includes('c++') || textLower.includes('pytorch')) {
+        replyText = `### 💻 Code Analysis & Optimization
+
+For **${selectedTopic}**, here is the optimized algorithm:
+
+\`\`\`cpp
+// IIT Delhi COL331 / COL106 Sample Implementation
+struct ThreadNode {
+    int thread_id;
+    uintptr_t stack_pointer;
+    ThreadState state;
+    ThreadNode* next;
+};
+
+void yield_cpu(ThreadNode* current, ThreadNode* next_thread) {
+    save_context(&current->stack_pointer);
+    current->state = READY;
+    next_thread->state = RUNNING;
+    restore_context(next_thread->stack_pointer);
+}
+\`\`\`
+
+*Key Takeaway:* Memory alignment and cache locality significantly boost context switch speed!`;
+      } else {
+        replyText = `Great query, Priya! 
+
+For **${selectedTopic}** under **${studyMode}** mode:
+
+- **Core Concept:** Thread Control Blocks (TCBs) manage process execution state, stack pointers, and privilege rings (Kernel vs. User mode).
+- **Exam Tip:** Remember that kernel threads share process address spaces, whereas process context switches invalidate Translation Lookaside Buffer (TLB) caches.
+
+Feel free to ask for a deeper step-by-step breakdown or code snippet!`;
+      }
 
       const aiMsg: ChatMessage = {
         id: `ai-${Date.now()}`,
@@ -67,18 +103,8 @@ export const AiStudyView: React.FC<AiStudyViewProps> = ({
       };
 
       setMessages((prev) => [...prev, aiMsg]);
-    } catch (err) {
-      console.error(err);
-      const fallbackMsg: ChatMessage = {
-        id: `ai-err-${Date.now()}`,
-        sender: 'ai',
-        text: "Great query, Priya! For COL331 Operating Systems context switching, thread control blocks (TCBs) store program counter, stack pointer, and register states during kernel preemptive scheduling.",
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setMessages((prev) => [...prev, fallbackMsg]);
-    } finally {
       setIsGenerating(false);
-    }
+    }, 600);
   };
 
   const handleAddMilestoneSubmit = (e: React.FormEvent) => {
