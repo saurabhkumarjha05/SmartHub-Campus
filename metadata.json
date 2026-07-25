@@ -1,0 +1,6 @@
+{
+  "name": "Smart Campus Hub",
+  "description": "IIT Delhi Smart Campus Hub - Indian-first university SaaS platform with AI study assistant, academic tracking, central library, canteen wallet, and campus events.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
