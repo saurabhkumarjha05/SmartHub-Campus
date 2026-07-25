@@ -1,9 +1,12 @@
-# Smart Campus Hub (IIT Delhi Edition) 🎓
+<div align="center">
+   
+# Smart Campus Hub🎓
 
 > **Premier University SaaS Platform & Academic Management Ecosystem**
 > Built for students, research scholars, and faculty with integrated AI Study Assistant, Digital Canteen Wallet, Central Library E-reader, Geofenced Attendance, and Campus Events.
 
 ---
+</div>
 
 ## 🌟 Key Features
 
